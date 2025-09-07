@@ -99,6 +99,8 @@
           <button id="btn-stop" class="btn ghost" style="display:none">Stop</button>
           <button id="btn-share" class="btn ghost">Share My Uselessness</button>
           <button id="btn-copy" class="btn ghost">Copy Link</button>
+          <button id="btn-reset" class="btn ghost">Reset Achievements</button> <!-- added button -->
+
         </div>
         <p class="rules">Rules: no moving, clicking, tapping, scrolling, key presses, window switching, or tab changing. Touching grass is allowed afterwards.</p>
         <div id="earned" class="badges" aria-label="earned badges"></div>
@@ -267,6 +269,16 @@ function spawnConfetti() {
     // listeners
     startBtn.addEventListener("click",start);
     stopBtn.addEventListener("click",stop);
+      // Reset achievements
+document.getElementById("btn-reset").addEventListener("click", () => {
+  if(confirm("Are you sure you want to reset all your badges?")) {
+    earned = [];
+    localStorage.badges = JSON.stringify(earned);
+    renderEarned();
+    showToast("Achievements reset!");
+  }
+});
+
     document.getElementById("btn-share").addEventListener("click",()=>navigator.share?navigator.share({title:"Do Nothing Challenge",text:`I did nothing for ${timerEl.textContent}!`,url:location.href}):copyLink());
     document.getElementById("btn-copy").addEventListener("click",copyLink);
     document.getElementById("btn-share-top").addEventListener("click",copyLink);
