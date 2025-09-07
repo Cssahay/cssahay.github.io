@@ -56,6 +56,9 @@
     canvas#confetti{position:fixed;inset:0;pointer-events:none;z-index:10}
     .muted{color:var(--muted)}
   </style>
+  <!-- AdSense global loader -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3749910047527061"
+     crossorigin="anonymous"></script>
 </head>
 <body>
   <canvas id="confetti" aria-hidden="true"></canvas>
@@ -90,14 +93,16 @@
         <div id="earned" class="badges" aria-label="earned badges"></div>
       </div>
 
+      <!-- Hero Ad (Rectangle) -->
       <div class="card" aria-hidden="false">
         <div class="ad" aria-label="ad slot rectangle">
-          <!-- Replace this box with your AdSense code after approval. -->
-          <div>
-            <div style="font-weight:800">Ad Slot</div>
-            <small>336×280 / 300×250</small><br>
-            <small>Paste AdSense code here</small>
-          </div>
+          <ins class="adsbygoogle"
+               style="display:block"
+               data-ad-client="ca-pub-3749910047527061"
+               data-ad-slot="1178752977"
+               data-ad-format="auto"
+               data-full-width-responsive="true"></ins>
+          <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
         </div>
       </div>
     </section>
@@ -118,19 +123,28 @@
         </div>
       </div>
       <div class="card">
+        <!-- Sidebar Skyscraper -->
         <div class="ad" style="min-height:250px" aria-label="ad slot skyscraper">
-          <div>
-            <div style="font-weight:800">Ad Slot</div>
-            <small>160×600 / 300×600</small><br>
-            <small>Paste AdSense code here</small>
-          </div>
+          <ins class="adsbygoogle"
+               style="display:block"
+               data-ad-client="ca-pub-3749910047527061"
+               data-ad-slot="7616416236"
+               data-ad-format="auto"
+               data-full-width-responsive="true"></ins>
+          <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
         </div>
+
         <div style="height:12px"></div>
+
+        <!-- Sidebar Responsive -->
         <div class="ad" aria-label="ad slot small">
-          <div>
-            <div style="font-weight:800">Ad Slot</div>
-            <small>Responsive</small>
-          </div>
+          <ins class="adsbygoogle"
+               style="display:block"
+               data-ad-client="ca-pub-3749910047527061"
+               data-ad-slot="8642310028"
+               data-ad-format="auto"
+               data-full-width-responsive="true"></ins>
+          <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
         </div>
       </div>
     </section>
@@ -147,6 +161,7 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite">Copied!</div>
 
+  <!-- Privacy/Terms dialogs -->
   <dialog id="modal-privacy" class="card" style="max-width:720px">
     <h3 class="section-title">Privacy Policy</h3>
     <p class="muted">We use localStorage to store your best time and badges. If you embed ads, your ad provider may collect data per their policy. We do not sell or share personal data. Contact: uselesschallenge@gmail.com</p>
@@ -158,358 +173,54 @@
     <form method="dialog" style="margin-top:10px"><button class="btn">Close</button></form>
   </dialog>
 
+  <!-- Main JS -->
   <script>
-    // ---------- Config ----------
-    const milestones = [
-      { s: 10, name: 'Level 1: Bronze Statue' },
-      { s: 30, name: 'Level 2: Couch Potato' },
-      { s: 60, name: 'Level 3: Human Pause Button' },
-      { s: 120, name: 'Level 4: AFK Master' },
-      { s: 300, name: 'Level 5: Supreme Idler' }
-    ];
-    const MOUSE_MOVE_THRESHOLD = 6; // px - small jitters ignored
-
-    // ---------- Elements ----------
     const timerEl = document.getElementById('timer');
     const statusEl = document.getElementById('status');
+    const startBtn = document.getElementById('btn-start');
+    const stopBtn = document.getElementById('btn-stop');
     const earnedEl = document.getElementById('earned');
+    const milestonesEl = document.getElementById('milestones');
     const toast = document.getElementById('toast');
     const confettiCanvas = document.getElementById('confetti');
-    const btnStart = document.getElementById('btn-start');
-    const btnStop = document.getElementById('btn-stop');
-    const btnShare = document.getElementById('btn-share');
-    const btnShareTop = document.getElementById('btn-share-top');
-    const btnCopy = document.getElementById('btn-copy');
-    const btnTwitter = document.getElementById('btn-twitter');
-    const btnWhatsApp = document.getElementById('btn-whatsapp');
-    const btnEmbed = document.getElementById('btn-embed');
+    const yearEl = document.getElementById('year');
+    yearEl.textContent = new Date().getFullYear();
 
-    const modalPrivacy = document.getElementById('modal-privacy');
-    const modalTerms = document.getElementById('modal-terms');
-    document.getElementById('open-privacy').onclick = () => modalPrivacy.showModal();
-    document.getElementById('open-terms').onclick = () => modalTerms.showModal();
-    document.getElementById('year').textContent = new Date().getFullYear();
+    const milestones = [
+      {sec:5,label:"Still Alive"},
+      {sec:30,label:"Couch Potato"},
+      {sec:60,label:"Zen Beginner"},
+      {sec:180,label:"Certified Useless"},
+      {sec:600,label:"Do Nothing Master"},
+    ];
 
-    // populate milestones UI
-    const milestonesBox = document.getElementById('milestones');
-    milestones.forEach(m => {
-      const el = document.createElement('span');
-      el.className = 'badge';
-      el.innerHTML = `<span class="dot" style="background:#334155;box-shadow:none"></span>${m.name} — <span class="muted">${m.s}s</span>`;
-      el.dataset.seconds = m.s;
-      milestonesBox.appendChild(el);
-    });
+    let running=false,seconds=0,timerInterval,best=+localStorage.bestTime||0,earned=JSON.parse(localStorage.badges||"[]");
 
-    // ---------- State ----------
-    let startTime = null; // ms timestamp when run started
-    let rafId = null;
-    let best = Number(localStorage.getItem('best') || 0);
-    let unlocked = JSON.parse(localStorage.getItem('badges') || '[]');
-    let lastMouse = { x: null, y: null };
-    let confettiCancel = null;
+    function updateTimer(){const m=String(Math.floor(seconds/60)).padStart(2,"0"),s=String(seconds%60).padStart(2,"0");timerEl.textContent=`${m}:${s}`}
+    function start(){if(running)return;running=true;seconds=0;updateTimer();statusEl.textContent="Doing nothing…";startBtn.style.display="none";stopBtn.style.display="inline-flex";timerInterval=setInterval(tick,1000)}
+    function stop(){running=false;clearInterval(timerInterval);statusEl.textContent="Stopped.";startBtn.style.display="inline-flex";stopBtn.style.display="none";if(seconds>best){best=seconds;localStorage.bestTime=best}}
+    function reset(){if(!running)return;stop();seconds=0;updateTimer();statusEl.textContent="You moved! Reset."}
+    function tick(){seconds++;updateTimer();checkMilestones()}
+    function checkMilestones(){for(const m of milestones){if(seconds===m.sec && !earned.includes(m.label)){earned.push(m.label);localStorage.badges=JSON.stringify(earned);renderEarned();spawnConfetti()}}}
+    function renderEarned(){earnedEl.innerHTML=earned.map(b=>`<span class="badge"><span class="dot"></span>${b}</span>`).join("")}
+    function renderMilestones(){milestonesEl.innerHTML=milestones.map(m=>`<span class="badge"><span class="dot"></span>${m.label} (${m.sec}s)</span>`).join("")}
+    function showToast(msg){toast.textContent=msg;toast.classList.add("show");setTimeout(()=>toast.classList.remove("show"),2000)}
+    function copyLink(){navigator.clipboard.writeText(location.href).then(()=>showToast("Link copied!"))}
+    function spawnConfetti(){const ctx=confettiCanvas.getContext("2d"),w=confettiCanvas.width=innerWidth,h=confettiCanvas.height=innerHeight,particles=[];for(let i=0;i<150;i++){particles.push({x:Math.random()*w,y:Math.random()*h,dx:(Math.random()-0.5)*2,dy:Math.random()*3+2,r:Math.random()*6+2})}let t=0;function draw(){ctx.clearRect(0,0,w,h);particles.forEach(p=>{ctx.fillStyle=`hsl(${360*Math.random()},100%,50%)`;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,2*Math.PI);ctx.fill();p.x+=p.dx;p.y+=p.dy;if(p.y>h)p.y=0});if(t<100){t++;requestAnimationFrame(draw)}}draw()}
 
-    renderEarned();
-    restoreBestFromUrlParam();
-
-    // ---------- Helpers ----------
-    function fmt(s){
-      const m = Math.floor(s/60).toString().padStart(2,'0');
-      const r = (s%60).toString().padStart(2,'0');
-      return `${m}:${r}`;
-    }
-
-    let toastTimer;
-    function toastMsg(t){
-      toast.textContent = t;
-      toast.classList.add('show');
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(()=>toast.classList.remove('show'), 1800);
-    }
-
-    function updateShareLinks(){
-      const msg = encodeURIComponent(shareText());
-      btnTwitter.onclick = () => window.open(`https://twitter.com/intent/tweet?text=${msg}`, '_blank', 'noopener');
-      btnWhatsApp.onclick = () => window.open(`https://api.whatsapp.com/send?text=${msg}`, '_blank', 'noopener');
-    }
-
-    function shareText(){
-      const u = new URL(location.href);
-      if (best>0) u.searchParams.set('best', best);
-      const when = best > 0 ? `for ${fmt(best)}` : 'for nothing (yet)';
-      return `I did nothing ${when} and earned pointless badges. Can you beat me? ${u.toString()}`;
-    }
-
-    // ---------- Core timer logic ----------
-    function tick(){
-      if (!startTime) return;
-      const elapsed = Math.floor((Date.now() - startTime)/1000);
-      timerEl.textContent = fmt(elapsed);
-      statusEl.textContent = 'Doing nothing…';
-
-      // Unlock badges
-      milestones.forEach(m => {
-        if (elapsed >= m.s && !unlocked.includes(m.s)) {
-          unlocked.push(m.s);
-          localStorage.setItem('badges', JSON.stringify(unlocked));
-          spawnConfetti();
-          toastMsg(`Unlocked: ${m.name}`);
-          renderEarned();
-        }
-      });
-
-      rafId = requestAnimationFrame(tick);
-    }
-
-    function startRun(){
-      if (startTime) return; // already running
-      startTime = Date.now();
-      lastMouse = { x: null, y: null };
-      statusEl.textContent = 'Doing nothing…';
-      btnStart.style.display = 'none';
-      btnStop.style.display = '';
-      rafId = requestAnimationFrame(tick);
-    }
-
-    function stopRun(){
-      // manual stop - treat as fail but without best-update if 0
-      if (!startTime) return;
-      const elapsed = Math.floor((Date.now() - startTime)/1000);
-      cancelAnimationFrame(rafId);
-      startTime = null;
-      rafId = null;
-      btnStart.style.display = '';
-      btnStop.style.display = 'none';
-      statusEl.textContent = 'Stopped. Your timer was reset.';
-      if (elapsed > best){
-        best = elapsed;
-        localStorage.setItem('best', best);
-        toastMsg(`New personal best: ${fmt(best)}`);
-        renderEarned();
-      } else {
-        timerEl.textContent = '00:00';
-      }
-    }
-
-    function failRun(reason){
-      if (!startTime) return;
-      const elapsed = Math.floor((Date.now() - startTime)/1000);
-      cancelAnimationFrame(rafId);
-      startTime = null;
-      rafId = null;
-      btnStart.style.display = '';
-      btnStop.style.display = 'none';
-      statusEl.textContent = reason || 'Oops, you moved! Timer reset.';
-      if (elapsed > best){
-        best = elapsed;
-        localStorage.setItem('best', best);
-        toastMsg(`New personal best: ${fmt(best)}`);
-        renderEarned();
-      } else {
-        toastMsg('Run failed — try again.');
-      }
-      timerEl.textContent = '00:00';
-    }
-
-    // ---------- Input/activity detection ----------
-    function handlePointerMove(e){
-      if (!startTime) return;
-      // support mouse and touch (touch events will produce touchmove in pointer)
-      const x = (e.touches && e.touches[0]) ? e.touches[0].clientX : (e.clientX ?? null);
-      const y = (e.touches && e.touches[0]) ? e.touches[0].clientY : (e.clientY ?? null);
-      if (x === null || y === null) return;
-      if (lastMouse.x === null || lastMouse.y === null){
-        lastMouse.x = x; lastMouse.y = y;
-        return;
-      }
-      const dx = Math.abs(x - lastMouse.x);
-      const dy = Math.abs(y - lastMouse.y);
-      if (dx > MOUSE_MOVE_THRESHOLD || dy > MOUSE_MOVE_THRESHOLD){
-        failRun('You moved! Timer reset.');
-      }
-    }
-
-    function handleAnyActivity(e){
-      if (!startTime) return;
-      // Events that always reset (keydown, wheel, touchstart, mousedown)
-      const alwaysReset = ['keydown','wheel','mousedown','touchstart','scroll'];
-      if (alwaysReset.includes(e.type)){
-        failRun('Activity detected — timer reset.');
-      }
-    }
-
-    function handleVisibilityChange(){
-      if (!startTime) return;
-      if (document.visibilityState === 'hidden') {
-        // switched away -> immediate fail
-        failRun('Tab hidden — timer reset.');
-      }
-      // If they return (visible), we do not auto-start or anything.
-    }
-
-    // Attach global listeners (passive where useful)
-    window.addEventListener('mousemove', handlePointerMove, { passive: true });
-    window.addEventListener('touchmove', handlePointerMove, { passive: true });
-    window.addEventListener('keydown', handleAnyActivity, { passive: true });
-    window.addEventListener('wheel', handleAnyActivity, { passive: true });
-    window.addEventListener('mousedown', handleAnyActivity, { passive: true });
-    window.addEventListener('touchstart', handleAnyActivity, { passive: true });
-    window.addEventListener('scroll', handleAnyActivity, { passive: true });
-    window.addEventListener('visibilitychange', handleVisibilityChange);
-
-    // handle blur (window lost focus)
-    window.addEventListener('blur', () => {
-      if (!startTime) return;
-      // treat as fail - user switched windows/apps
-      failRun('Window lost focus — timer reset.');
-    });
-
-    // ---------- Share & copy ----------
-    function copyLink(){
-      const u = new URL(location.href);
-      if (best>0) u.searchParams.set('best', best);
-      navigator.clipboard.writeText(u.toString()).then(()=>toastMsg('Link copied!')).catch(()=>toastMsg('Copy failed'));
-    }
-
-    async function shareNative(){
-      const text = shareText();
-      try{
-        if (navigator.share){
-          await navigator.share({ title: 'Do Nothing Challenge', text, url: location.href });
-        } else {
-          await navigator.clipboard.writeText(text);
-          toastMsg('Share text copied!');
-        }
-      }catch(e){ /* user cancelled or no permission */ }
-    }
-
-    btnStart.onclick = startRun;
-    btnStop.onclick = stopRun;
-    btnShare.onclick = shareNative;
-    btnShareTop.onclick = shareNative;
-    btnCopy.onclick = copyLink;
-
-    // Embed code
-    btnEmbed.onclick = () => {
-      const code = `<iframe src="${location.origin+location.pathname}" width="480" height="360" style="border:0;max-width:100%" title="Do Nothing Challenge"></iframe>`;
-      navigator.clipboard.writeText(code).then(()=>toastMsg('Embed code copied!')).catch(()=>toastMsg('Copy failed'));
-    };
-
-    // ---------- Earned rendering ----------
-    function renderEarned(){
-      earnedEl.innerHTML = '';
-      const sorted = [...unlocked].sort((a,b)=>a-b);
-      sorted.forEach(sec => {
-        const m = milestones.find(x=>x.s===sec);
-        if (!m) return;
-        const el = document.createElement('span');
-        el.className='badge';
-        el.innerHTML = `<span class="dot"></span>${m.name}`;
-        earnedEl.appendChild(el);
-      });
-      if (best>0){
-        const el = document.createElement('div');
-        el.className='rules';
-        el.innerHTML = `Best time: <b>${fmt(best)}</b>`;
-        earnedEl.appendChild(el);
-      }
-      updateShareLinks();
-    }
-
-    // url param import
-    function restoreBestFromUrlParam(){
-      const params = new URLSearchParams(location.search);
-      const bestParam = parseInt(params.get('best')||'0',10);
-      if (!Number.isNaN(bestParam) && bestParam > best) {
-        best = bestParam;
-        localStorage.setItem('best', best);
-        renderEarned();
-      }
-    }
-
-    // ---------- Confetti ----------
-    const ctx = confettiCanvas.getContext('2d');
-    function spawnConfetti(){
-      // cancel previous animation if running
-      if (confettiCancel) {
-        confettiCancel();
-        confettiCancel = null;
-      }
-      const W = window.innerWidth;
-      const H = window.innerHeight;
-      confettiCanvas.width = W;
-      confettiCanvas.height = H;
-
-      const pieces = Array.from({length: 100}, () => ({
-        x: Math.random()*W,
-        y: -Math.random()*H*0.2,
-        vx: (Math.random()-0.5)*4,
-        vy: Math.random()*2+2,
-        r: Math.random()*6+4,
-        a: Math.random()*Math.PI,
-        rotSpeed: (Math.random()-0.5)*0.2,
-        life: Math.floor(Math.random()*120)+80
-      }));
-
-      let frame = 0;
-      let running = true;
-      function step(){
-        if (!running) return;
-        ctx.clearRect(0,0,W,H);
-        pieces.forEach(p=>{
-          p.x += p.vx;
-          p.y += p.vy;
-          p.vy += 0.03; // gravity-like
-          p.a += p.rotSpeed;
-          p.life--;
-          ctx.save();
-          ctx.translate(p.x,p.y);
-          ctx.rotate(p.a);
-          // random pleasant palette via hsl
-          const hue = Math.floor((p.x + p.y + frame) % 360);
-          ctx.fillStyle = `hsl(${hue} 80% 60%)`;
-          ctx.fillRect(-p.r/2, -p.r/2, p.r, p.r * 0.7);
-          ctx.restore();
-        });
-        frame++;
-        if (pieces.every(p=>p.life <= 0 || p.y > H + 50)) {
-          running = false;
-        } else {
-          requestAnimationFrame(step);
-        }
-      }
-      confettiCancel = () => { running = false; ctx.clearRect(0,0,W,H); };
-      step();
-    }
-
-    window.addEventListener('resize', () => {
-      // keep confetti canvas size in sync when user resizes
-      confettiCanvas.width = window.innerWidth;
-      confettiCanvas.height = window.innerHeight;
-    });
-
-    // ---------- Initialize UI links ----------
-    updateShareLinks();
-
-    // Accessibility: allow space/enter to start/stop when focused on Start/Stop
-    btnStart.addEventListener('keyup', (e) => { if (e.key === ' ' || e.key === 'Enter') startRun(); });
-    btnStop.addEventListener('keyup', (e) => { if (e.key === ' ' || e.key === 'Enter') stopRun(); });
-
-    // ---------- Safety: guard localStorage parse ----------
-    try {
-      JSON.parse(localStorage.getItem('badges') || '[]');
-    } catch(e) {
-      localStorage.setItem('badges','[]');
-      unlocked = [];
-    }
-
-    // Keyboard shortcuts (optional): S to start, X to stop — lightweight convenience
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 's' || e.key === 'S') {
-        if (!startTime) startRun();
-      } else if (e.key === 'x' || e.key === 'X') {
-        if (startTime) stopRun();
-      }
-    });
+    // listeners
+    startBtn.addEventListener("click",start);
+    stopBtn.addEventListener("click",stop);
+    document.getElementById("btn-share").addEventListener("click",()=>navigator.share?navigator.share({title:"Do Nothing Challenge",text:`I did nothing for ${timerEl.textContent}!`,url:location.href}):copyLink());
+    document.getElementById("btn-copy").addEventListener("click",copyLink);
+    document.getElementById("btn-share-top").addEventListener("click",copyLink);
+    document.getElementById("btn-twitter").addEventListener("click",()=>window.open(`https://twitter.com/intent/tweet?text=I%20did%20nothing%20for%20${timerEl.textContent}%20on%20DoNothingChallenge!%20${encodeURIComponent(location.href)}`));
+    document.getElementById("btn-whatsapp").addEventListener("click",()=>window.open(`https://wa.me/?text=I%20did%20nothing%20for%20${timerEl.textContent}%20on%20DoNothingChallenge!%20${encodeURIComponent(location.href)}`));
+    document.getElementById("btn-embed").addEventListener("click",()=>{navigator.clipboard.writeText('<iframe src="'+location.href+'" width="600" height="400"></iframe>');showToast("Embed code copied!")});
+    document.getElementById("open-privacy").addEventListener("click",()=>document.getElementById("modal-privacy").showModal());
+    document.getElementById("open-terms").addEventListener("click",()=>document.getElementById("modal-terms").showModal());
+    window.addEventListener("blur",reset);["mousemove","keydown","scroll","touchstart"].forEach(e=>window.addEventListener(e,reset));
+    renderMilestones();renderEarned();updateTimer();
   </script>
 </body>
 </html>
