@@ -217,7 +217,52 @@
     function renderMilestones(){milestonesEl.innerHTML=milestones.map(m=>`<span class="badge"><span class="dot"></span>${m.label} (${m.sec}s)</span>`).join("")}
     function showToast(msg){toast.textContent=msg;toast.classList.add("show");setTimeout(()=>toast.classList.remove("show"),2000)}
     function copyLink(){navigator.clipboard.writeText(location.href).then(()=>showToast("Link copied!"))}
-    function spawnConfetti(){const ctx=confettiCanvas.getContext("2d"),w=confettiCanvas.width=innerWidth,h=confettiCanvas.height=innerHeight,particles=[];for(let i=0;i<150;i++){particles.push({x:Math.random()*w,y:Math.random()*h,dx:(Math.random()-0.5)*2,dy:Math.random()*3+2,r:Math.random()*6+2})}let t=0;function draw(){ctx.clearRect(0,0,w,h);particles.forEach(p=>{ctx.fillStyle=`hsl(${360*Math.random()},100%,50%)`;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,2*Math.PI);ctx.fill();p.x+=p.dx;p.y+=p.dy;if(p.y>h)p.y=0});if(t<100){t++;requestAnimationFrame(draw)}}draw()}
+function spawnConfetti() {
+  const ctx = confettiCanvas.getContext("2d");
+  const w = confettiCanvas.width = innerWidth;
+  const h = confettiCanvas.height = innerHeight;
+
+  const particles = [];
+  const colors = ["#22c55e","#ef4444","#3b82f6","#f59e0b","#a855f7","#10b981"];
+
+  for (let i = 0; i < 150; i++) {
+    particles.push({
+      x: Math.random() * w,
+      y: Math.random() * -50,
+      dx: (Math.random() - 0.5) * 4,
+      dy: Math.random() * 3 + 2,
+      r: Math.random() * 6 + 4,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      opacity: 1
+    });
+  }
+
+  let frame = 0;
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+
+    particles.forEach(p => {
+      ctx.globalAlpha = p.opacity;
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
+      ctx.fill();
+
+      p.x += p.dx;
+      p.y += p.dy;
+      p.opacity -= 0.005;
+    });
+
+    frame++;
+    if (frame < 400) {
+      requestAnimationFrame(draw);
+    } else {
+      ctx.clearRect(0, 0, w, h);
+    }
+  }
+
+  draw();
+}
 
     // listeners
     startBtn.addEventListener("click",start);
