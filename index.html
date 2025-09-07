@@ -1,23 +1,21 @@
 <!doctype html>
 <html lang="en">
-
 <head>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-5HEFMHPJ3Y"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
 
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-    gtag('js', new Date());
-    gtag('config', 'G-5HEFMHPJ3Y');
-  </script>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5HEFMHPJ3Y"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-5HEFMHPJ3Y');
+</script>
+  
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Do Nothing Challenge — Earn Badges For Being Useless</title>
-  <meta name="description"
-    content="A totally useless website where you win badges by doing absolutely nothing. Share your best 'I did nothing' time. (Ad slots included)" />
+  <meta name="description" content="A totally useless website where you win badges by doing absolutely nothing. Share your best 'I did nothing' time. (Ad slots included)" />
   <meta property="og:title" content="Do Nothing Challenge" />
   <meta property="og:description" content="Win badges by doing absolutely nothing. How long can you last?" />
   <meta property="og:type" content="website" />
@@ -27,328 +25,99 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: #0f172a;
-      --fg: #e5e7eb;
-      --muted: #94a3b8;
-      --accent: #22c55e;
-      --warning: #f59e0b;
-      --card: #111827;
-      --badge: #1f2937
-    }
-
-    * {
-      box-sizing: border-box
-    }
-
-    html,
-    body {
-      height: 100%
-    }
-
-    body {
-      margin: 0;
-      font-family: Inter, system-ui, Segoe UI, Roboto, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji;
-      color: var(--fg);
-      background: radial-gradient(1200px 800px at 70% -200px, #1f2937 0%, #0f172a 50%, #0b1220 100%);
-    }
-
-    a {
-      color: inherit
-    }
-
-    .container {
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 24px
-    }
-
-    header {
-      display: flex;
-      gap: 16px;
-      align-items: center;
-      justify-content: space-between
-    }
-
-    .logo {
-      display: flex;
-      gap: 12px;
-      align-items: center
-    }
-
-    .logo-bubble {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      background: conic-gradient(from 120deg, #22c55e, #84cc16, #22c55e);
-      box-shadow: 0 6px 18px rgba(34, 197, 94, .35)
-    }
-
-    .title {
-      font-weight: 800;
-      letter-spacing: .2px
-    }
-
-    .nav {
-      display: flex;
-      gap: 10px
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      border: 1px solid #334155;
-      background: #0b1220;
-      padding: 10px 14px;
-      border-radius: 12px;
-      color: var(--fg);
-      text-decoration: none;
-      font-weight: 600;
-      cursor: pointer
-    }
-
-    .btn:hover {
-      border-color: #475569;
-      transform: translateY(-1px)
-    }
-
-    .hero {
-      display: grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap: 24px;
-      margin-top: 24px
-    }
-
-    @media (max-width:900px) {
-      .hero {
-        grid-template-columns: 1fr
-      }
-    }
-
-    .card {
-      background: linear-gradient(180deg, #0b1220, #0a0f1a);
-      border: 1px solid #1f2a3b;
-      border-radius: 20px;
-      padding: 22px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, .25)
-    }
-
-    .headline {
-      font-size: clamp(24px, 3.6vw, 42px);
-      line-height: 1.1;
-      margin: 8px 0 6px
-    }
-
-    .sub {
-      color: var(--muted);
-      margin: 0
-    }
-
-    .timer {
-      font-variant-numeric: tabular-nums;
-      font-size: clamp(42px, 9vw, 96px);
-      font-weight: 800;
-      text-align: center;
-      letter-spacing: 1px;
-      margin: 8px 0
-    }
-
-    .status {
-      color: #a3e635;
-      text-align: center;
-      font-weight: 700;
-      margin-bottom: 8px
-    }
-
-    .rules {
-      color: var(--muted);
-      font-size: 14px;
-      text-align: center;
-      margin-top: 6px
-    }
-
-    .badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 14px
-    }
-
-    .badge {
-      background: linear-gradient(180deg, #142031, #0d1624);
-      border: 1px solid #243245;
-      color: #d1d5db;
-      padding: 10px 12px;
-      border-radius: 999px;
-      display: inline-flex;
-      gap: 8px;
-      align-items: center;
-      font-weight: 700
-    }
-
-    .badge .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 12px var(--accent)
-    }
-
-    .cta-row {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: 14px
-    }
-
-    .primary {
-      background: linear-gradient(90deg, #22c55e, #16a34a);
-      border: 1px solid #16a34a
-    }
-
-    .ghost {
-      background: transparent;
-      border: 1px dashed #334155
-    }
-
-    .ad {
-      display: grid;
-      place-items: center;
-      background: #0a1220;
-      border: 1px dashed #334155;
-      border-radius: 16px;
-      color: #94a3b8;
-      min-height: 120px
-    }
-
-    .ad small {
-      opacity: .7
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 24px;
-      margin-top: 24px
-    }
-
-    @media (max-width:900px) {
-      .grid {
-        grid-template-columns: 1fr
-      }
-    }
-
-    .section-title {
-      font-size: 20px;
-      margin: 0 0 10px
-    }
-
-    .share-box {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap
-    }
-
-    .kbd {
-      font: 12px/1.2 ui-monospace, SFMono-Regular, Consolas, Monaco;
-      padding: 4px 6px;
-      border: 1px solid #334155;
-      border-radius: 8px;
-      background: #0b1220;
-      color: #9ca3af
-    }
-
-    footer {
-      margin-top: 36px;
-      color: #94a3b8;
-      font-size: 13px
-    }
-
-    .links {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap
-    }
-
-    .pill {
-      padding: 8px 10px;
-      border-radius: 999px;
-      border: 1px solid #334155
-    }
-
-    .toast {
-      position: fixed;
-      top: 14px;
-      right: 14px;
-      background: #0b1220;
-      border: 1px solid #334155;
-      padding: 10px 12px;
-      border-radius: 12px;
-      opacity: 0;
-      transform: translateY(-12px);
-      transition: .2s;
-      z-index: 50
-    }
-
-    .toast.show {
-      opacity: 1;
-      transform: none
-    }
-
-    canvas#confetti {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 10
-    }
-
-    .muted {
-      color: var(--muted)
-    }
-  </style> <!-- AdSense global loader -->
+    :root{--bg:#0f172a;--fg:#e5e7eb;--muted:#94a3b8;--accent:#22c55e;--warning:#f59e0b;--card:#111827;--badge:#1f2937}
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,Apple Color Emoji,Segoe UI Emoji; color:var(--fg);background:radial-gradient(1200px 800px at 70% -200px,#1f2937 0%,#0f172a 50%,#0b1220 100%);}
+    a{color:inherit}
+    .container{max-width:980px;margin:0 auto;padding:24px}
+    header{display:flex;gap:16px;align-items:center;justify-content:space-between}
+    .logo{display:flex;gap:12px;align-items:center}
+    .logo-bubble{width:40px;height:40px;border-radius:12px;background:conic-gradient(from 120deg, #22c55e, #84cc16, #22c55e);box-shadow:0 6px 18px rgba(34,197,94,.35)}
+    .title{font-weight:800;letter-spacing:.2px}
+    .nav{display:flex;gap:10px}
+    .btn{display:inline-flex;align-items:center;gap:8px;border:1px solid #334155;background:#0b1220;padding:10px 14px;border-radius:12px;color:var(--fg);text-decoration:none;font-weight:600;cursor:pointer}
+    .btn:hover{border-color:#475569;transform:translateY(-1px)}
+    .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:24px;margin-top:24px}
+    @media (max-width:900px){.hero{grid-template-columns:1fr}}
+    .card{background:linear-gradient(180deg,#0b1220,#0a0f1a);border:1px solid #1f2a3b;border-radius:20px;padding:22px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+    .headline{font-size:clamp(24px,3.6vw,42px);line-height:1.1;margin:8px 0 6px}
+    .sub{color:var(--muted);margin:0}
+    .timer{font-variant-numeric:tabular-nums; font-size:clamp(42px,9vw,96px);font-weight:800;text-align:center;letter-spacing:1px;margin:8px 0}
+    .status{color:#a3e635;text-align:center;font-weight:700;margin-bottom:8px}
+    .rules{color:var(--muted);font-size:14px;text-align:center;margin-top:6px}
+    .badges{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px}
+    .badge{background:linear-gradient(180deg,#142031,#0d1624);border:1px solid #243245;color:#d1d5db;padding:10px 12px;border-radius:999px;display:inline-flex;gap:8px;align-items:center;font-weight:700}
+    .badge .dot{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent)}
+    .cta-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:14px}
+    .primary{background:linear-gradient(90deg,#22c55e,#16a34a);border:1px solid #16a34a}
+    .ghost{background:transparent;border:1px dashed #334155}
+    .ad{display:grid;place-items:center;background:#0a1220;border:1px dashed #334155;border-radius:16px;color:#94a3b8;min-height:120px}
+    .ad small{opacity:.7}
+    .grid{display:grid;grid-template-columns:2fr 1fr;gap:24px;margin-top:24px}
+    @media (max-width:900px){.grid{grid-template-columns:1fr}}
+    .section-title{font-size:20px;margin:0 0 10px}
+    .share-box{display:flex;gap:10px;flex-wrap:wrap}
+    .kbd{font:12px/1.2 ui-monospace,SFMono-Regular,Consolas,Monaco; padding:4px 6px;border:1px solid #334155;border-radius:8px;background:#0b1220;color:#9ca3af}
+    footer{margin-top:36px;color:#94a3b8;font-size:13px}
+    .links{display:flex;gap:12px;flex-wrap:wrap}
+    .pill{padding:8px 10px;border-radius:999px;border:1px solid #334155}
+    .toast{position:fixed;top:14px;right:14px;background:#0b1220;border:1px solid #334155;padding:10px 12px;border-radius:12px;opacity:0;transform:translateY(-12px);transition:.2s;z-index:50}
+    .toast.show{opacity:1;transform:none}
+    canvas#confetti{position:fixed;inset:0;pointer-events:none;z-index:10}
+    .muted{color:var(--muted)}
+  </style>
+  <!-- AdSense global loader -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3749910047527061"
-    crossorigin="anonymous"></script>
+     crossorigin="anonymous"></script>
 </head>
-
-<body> <canvas id="confetti" aria-hidden="true"></canvas>
+<body>
+  <canvas id="confetti" aria-hidden="true"></canvas>
   <div class="container">
     <header>
       <div class="logo">
         <div class="logo-bubble" aria-hidden="true"></div>
         <div>
-          <div class="title">Do Nothing Challenge</div> <small class="muted">A proudly useless website</small>
+          <div class="title">Do Nothing Challenge</div>
+          <small class="muted">A proudly useless website</small>
         </div>
       </div>
-      <nav class="nav" aria-label="Primary navigation"> <a class="btn" href="#how">How it works</a> <button
-          id="btn-share-top" class="btn">Share</button> </nav>
+      <nav class="nav" aria-label="Primary navigation">
+        <a class="btn" href="#how">How it works</a>
+        <button id="btn-share-top" class="btn">Share</button>
+      </nav>
     </header>
+
     <section class="hero" aria-label="Main">
       <div class="card" aria-live="polite" aria-atomic="true">
         <p class="headline">Win badges by doing absolutely nothing.</p>
-        <p class="sub">Keep your mouse and keyboard completely still. If you move, type, scroll, or the tab goes to
-          background — the timer resets. Survive the milestones to earn ridiculous badges and internet glory.</p>
+        <p class="sub">Keep your mouse and keyboard completely still. If you move, type, scroll, or the tab goes to background — the timer resets. Survive the milestones to earn ridiculous badges and internet glory.</p>
         <div id="status" class="status">Stay still…</div>
         <div id="timer" class="timer" aria-label="Do nothing timer">00:00</div>
-        <div class="cta-row"> <button id="btn-start" class="btn primary">Start Doing Nothing</button> <button
-            id="btn-stop" class="btn ghost" style="display:none">Stop</button> <button id="btn-share"
-            class="btn ghost">Share My Uselessness</button> <button id="btn-copy" class="btn ghost">Copy Link</button>
+        <div class="cta-row">
+          <button id="btn-start" class="btn primary">Start Doing Nothing</button>
+          <button id="btn-stop" class="btn ghost" style="display:none">Stop</button>
+          <button id="btn-share" class="btn ghost">Share My Uselessness</button>
+          <button id="btn-copy" class="btn ghost">Copy Link</button>
         </div>
-        <p class="rules">Rules: no moving, clicking, tapping, scrolling, key presses, window switching, or tab changing.
-          Touching grass is allowed afterwards.</p>
+        <p class="rules">Rules: no moving, clicking, tapping, scrolling, key presses, window switching, or tab changing. Touching grass is allowed afterwards.</p>
         <div id="earned" class="badges" aria-label="earned badges"></div>
-      </div> <!-- Hero Ad (Rectangle) -->
+      </div>
+
+      <!-- Hero Ad (Rectangle) -->
       <div class="card" aria-hidden="false">
-        <div class="ad" aria-label="ad slot rectangle"> <ins class="adsbygoogle" style="display:block"
-            data-ad-client="ca-pub-3749910047527061" data-ad-slot="1178752977" data-ad-format="auto"
-            data-full-width-responsive="true"></ins>
-          <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-          </script>
+        <div class="ad" aria-label="ad slot rectangle">
+          <ins class="adsbygoogle"
+               style="display:block"
+               data-ad-client="ca-pub-3749910047527061"
+               data-ad-slot="1178752977"
+               data-ad-format="auto"
+               data-full-width-responsive="true"></ins>
+          <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
         </div>
       </div>
     </section>
+
     <section class="grid" id="how" tabindex="-1">
       <div class="card">
         <h2 class="section-title">How it (barely) works</h2>
@@ -358,49 +127,64 @@
           <li>Hit milestones to unlock badges. Share your best attempt to shame your productive friends.</li>
         </ol>
         <div class="badges" id="milestones"></div>
-        <div class="share-box" style="margin-top:12px"> <button class="btn" id="btn-twitter">Share on X</button> <button
-            class="btn" id="btn-whatsapp">Share on WhatsApp</button> <button class="btn" id="btn-embed">Get Embed
-            Code</button> </div>
+        <div class="share-box" style="margin-top:12px">
+          <button class="btn" id="btn-twitter">Share on X</button>
+          <button class="btn" id="btn-whatsapp">Share on WhatsApp</button>
+          <button class="btn" id="btn-embed">Get Embed Code</button>
+        </div>
       </div>
       <div class="card">
         <!-- Sidebar Skyscraper -->
-        <div class="ad" style="min-height:250px" aria-label="ad slot skyscraper"> <ins class="adsbygoogle"
-            style="display:block" data-ad-client="ca-pub-3749910047527061" data-ad-slot="7616416236"
-            data-ad-format="auto" data-full-width-responsive="true"></ins>
-          <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-          </script>
+        <div class="ad" style="min-height:250px" aria-label="ad slot skyscraper">
+          <ins class="adsbygoogle"
+               style="display:block"
+               data-ad-client="ca-pub-3749910047527061"
+               data-ad-slot="7616416236"
+               data-ad-format="auto"
+               data-full-width-responsive="true"></ins>
+          <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
         </div>
-        <div style="height:12px"></div> <!-- Sidebar Responsive -->
-        <div class="ad" aria-label="ad slot small"> <ins class="adsbygoogle" style="display:block"
-            data-ad-client="ca-pub-3749910047527061" data-ad-slot="8642310028" data-ad-format="auto"
-            data-full-width-responsive="true"></ins>
-          <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-          </script>
+
+        <div style="height:12px"></div>
+
+        <!-- Sidebar Responsive -->
+        <div class="ad" aria-label="ad slot small">
+          <ins class="adsbygoogle"
+               style="display:block"
+               data-ad-client="ca-pub-3749910047527061"
+               data-ad-slot="8642310028"
+               data-ad-format="auto"
+               data-full-width-responsive="true"></ins>
+          <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
         </div>
       </div>
     </section>
+
     <footer>
-      <div class="links"> <a class="pill" href="#" id="open-privacy">Privacy</a> <a class="pill" href="#"
-          id="open-terms">Terms</a> <span class="pill">© <span id="year"></span> Do Nothing Industries</span> </div>
-      <p class="muted">Disclaimer: This site is satire. It is objectively useless, but ads may still appear because
-        capitalism.</p>
+      <div class="links">
+        <a class="pill" href="#" id="open-privacy">Privacy</a>
+        <a class="pill" href="#" id="open-terms">Terms</a>
+        <span class="pill">© <span id="year"></span> Do Nothing Industries</span>
+      </div>
+      <p class="muted">Disclaimer: This site is satire. It is objectively useless, but ads may still appear because capitalism.</p>
     </footer>
   </div>
-  <div class="toast" id="toast" role="status" aria-live="polite">Copied!</div> <!-- Privacy/Terms dialogs -->
+
+  <div class="toast" id="toast" role="status" aria-live="polite">Copied!</div>
+
+  <!-- Privacy/Terms dialogs -->
   <dialog id="modal-privacy" class="card" style="max-width:720px">
     <h3 class="section-title">Privacy Policy</h3>
-    <p class="muted">We use localStorage to store your best time and badges. If you embed ads, your ad provider may
-      collect data per their policy. We do not sell or share personal data. Contact: uselesschallenge@gmail.com</p>
+    <p class="muted">We use localStorage to store your best time and badges. If you embed ads, your ad provider may collect data per their policy. We do not sell or share personal data. Contact: uselesschallenge@gmail.com</p>
     <form method="dialog" style="margin-top:10px"><button class="btn">Close</button></form>
   </dialog>
   <dialog id="modal-terms" class="card" style="max-width:720px">
     <h3 class="section-title">Terms of Use</h3>
-    <p class="muted">By using this site you agree to do nothing at your own risk. No guarantees of entertainment or
-      productivity are provided. Don’t cheat with automation; that’s our job.</p>
+    <p class="muted">By using this site you agree to do nothing at your own risk. No guarantees of entertainment or productivity are provided. Don’t cheat with automation; that’s our job.</p>
     <form method="dialog" style="margin-top:10px"><button class="btn">Close</button></form>
-  </dialog> <!-- Main JS -->
+  </dialog>
+
+  <!-- Main JS -->
   <script>
     const timerEl = document.getElementById('timer');
     const statusEl = document.getElementById('status');
@@ -412,141 +196,87 @@
     const confettiCanvas = document.getElementById('confetti');
     const yearEl = document.getElementById('year');
     yearEl.textContent = new Date().getFullYear();
-    const milestones = [{
-      sec: 5,
-      label: "Still Alive"
-    }, {
-      sec: 30,
-      label: "Couch Potato"
-    }, {
-      sec: 60,
-      label: "Zen Beginner"
-    }, {
-      sec: 180,
-      label: "Certified Useless"
-    }, {
-      sec: 600,
-      label: "Do Nothing Master"
-    }, ];
-    let running = false,
-      seconds = 0,
-      timerInterval, best = +localStorage.bestTime || 0,
-      earned = JSON.parse(localStorage.badges || "[]");
 
-    function updateTimer() {
-      const m = String(Math.floor(seconds / 60)).padStart(2, "0"),
-        s = String(seconds % 60).padStart(2, "0");
-      timerEl.textContent = $ {
-        m
-      }: $ {
-        s
-      }
+    const milestones = [
+      {sec:5,label:"Still Alive"},
+      {sec:30,label:"Couch Potato"},
+      {sec:60,label:"Zen Beginner"},
+      {sec:180,label:"Certified Useless"},
+      {sec:600,label:"Do Nothing Master"},
+    ];
+
+    let running=false,seconds=0,timerInterval,best=+localStorage.bestTime||0,earned=JSON.parse(localStorage.badges||"[]");
+
+    function updateTimer(){const m=String(Math.floor(seconds/60)).padStart(2,"0"),s=String(seconds%60).padStart(2,"0");timerEl.textContent=`${m}:${s}`}
+    function start(){if(running)return;running=true;seconds=0;updateTimer();statusEl.textContent="Doing nothing…";startBtn.style.display="none";stopBtn.style.display="inline-flex";timerInterval=setInterval(tick,1000)}
+    function stop(){running=false;clearInterval(timerInterval);statusEl.textContent="Stopped.";startBtn.style.display="inline-flex";stopBtn.style.display="none";if(seconds>best){best=seconds;localStorage.bestTime=best}}
+    function reset(){if(!running)return;stop();seconds=0;updateTimer();statusEl.textContent="You moved! Reset."}
+    function tick(){seconds++;updateTimer();checkMilestones()}
+    function checkMilestones(){for(const m of milestones){if(seconds===m.sec && !earned.includes(m.label)){earned.push(m.label);localStorage.badges=JSON.stringify(earned);renderEarned();spawnConfetti()}}}
+    function renderEarned(){earnedEl.innerHTML=earned.map(b=>`<span class="badge"><span class="dot"></span>${b}</span>`).join("")}
+    function renderMilestones(){milestonesEl.innerHTML=milestones.map(m=>`<span class="badge"><span class="dot"></span>${m.label} (${m.sec}s)</span>`).join("")}
+    function showToast(msg){toast.textContent=msg;toast.classList.add("show");setTimeout(()=>toast.classList.remove("show"),2000)}
+    function copyLink(){navigator.clipboard.writeText(location.href).then(()=>showToast("Link copied!"))}
+function spawnConfetti() {
+  const ctx = confettiCanvas.getContext("2d");
+  const w = confettiCanvas.width = innerWidth;
+  const h = confettiCanvas.height = innerHeight;
+
+  const particles = [];
+  const colors = ["#22c55e","#ef4444","#3b82f6","#f59e0b","#a855f7","#10b981"];
+
+  for (let i = 0; i < 150; i++) {
+    particles.push({
+      x: Math.random() * w,
+      y: Math.random() * -50,
+      dx: (Math.random() - 0.5) * 4,
+      dy: Math.random() * 3 + 2,
+      r: Math.random() * 6 + 4,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      opacity: 1
+    });
+  }
+
+  let frame = 0;
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+
+    particles.forEach(p => {
+      ctx.globalAlpha = p.opacity;
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
+      ctx.fill();
+
+      p.x += p.dx;
+      p.y += p.dy;
+      p.opacity -= 0.005;
+    });
+
+    frame++;
+    if (frame < 400) {
+      requestAnimationFrame(draw);
+    } else {
+      ctx.clearRect(0, 0, w, h);
     }
+  }
 
-    function start() {
-      if (running) return;
-      running = true;
-      seconds = 0;
-      updateTimer();
-      statusEl.textContent = "Doing nothing…";
-      startBtn.style.display = "none";
-      stopBtn.style.display = "inline-flex";
-      timerInterval = setInterval(tick, 1000)
-    }
+  draw();
+}
 
-    function stop() {
-      running = false;
-      clearInterval(timerInterval);
-      statusEl.textContent = "Stopped.";
-      startBtn.style.display = "inline-flex";
-      stopBtn.style.display = "none";
-      if (seconds > best) {
-        best = seconds;
-        localStorage.bestTime = best
-      }
-    }
-
-    function reset() {
-      if (!running) return;
-      stop();
-      seconds = 0;
-      updateTimer();
-      statusEl.textContent = "You moved! Reset."
-    }
-
-    function tick() {
-      seconds++;
-      updateTimer();
-      checkMilestones()
-    }
-
-    function checkMilestones() {
-      for (const m of milestones) {
-        if (seconds === m.sec && !earned.includes(m.label)) {
-          earned.push(m.label);
-          localStorage.badges = JSON.stringify(earned);
-          renderEarned();
-          spawnConfetti()
-        }
-      }
-    }
-
-    function renderEarned() {
-      earnedEl.innerHTML = earned.map(b => < span class = "badge" > < span class = "dot" > < /span>${b}</span > ).join(
-        "")
-    }
-
-    function renderMilestones() {
-      milestonesEl.innerHTML = milestones.map(m => < span class = "badge" > < span class = "dot" > <
-        /span>${m.label} (${m.sec}s)</span > ).join("")
-    }
-
-    function showToast(msg) {
-      toast.textContent = msg;
-      toast.classList.add("show");
-      setTimeout(() => toast.classList.remove("show"), 2000)
-    }
-
-    function copyLink() {
-      navigator.clipboard.writeText(location.href).then(() => showToast("Link copied!"))
-    }
-
-    function spawnConfetti() {
-      const ctx = confettiCanvas.getContext("2d"),
-        w = confettiCanvas.width = innerWidth,
-        h = confettiCanvas.height = innerHeight,
-        particles = [];
-      for (let i = 0; i < 150; i++) {
-        particles.push({
-          x: Math.random() * w,
-          y: Math.random() * h,
-          dx: (Math.random() - 0.5) * 2,
-          dy: Math.random() * 3 + 2,
-          r: Math.random() * 6 + 2
-        })
-      }
-      let t = 0;
-
-      function draw() {
-        ctx.clearRect(0, 0, w, h);
-        particles.forEach(p => {
-          ctx.fillStyle = hsl($ {
-            360 * Math.random()
-          }, 100 % , 50 % );
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
-          ctx.fill();
-          p.x += p.dx;
-          p.y += p.dy;
-          if (p.y > h) p.y = 0
-        });
-        if (t < 100) {
-          t++;
-          requestAnimationFrame(draw)
-        }
-      }
-      draw()
-    } // listeners startBtn.addEventListener("click",start); stopBtn.addEventListener("click",stop); document.getElementById("btn-share").addEventListener("click",()=>navigator.share?navigator.share({title:"Do Nothing Challenge",text:I did nothing for ${timerEl.textContent}!,url:location.href}):copyLink()); document.getElementById("btn-copy").addEventListener("click",copyLink); document.getElementById("btn-share-top").addEventListener("click",copyLink); document.getElementById("btn-twitter").addEventListener("click",()=>window.open(https://twitter.com/intent/tweet?text=I%20did%20nothing%20for%20${timerEl.textContent}%20on%20DoNothingChallenge!%20${encodeURIComponent(location.href)})); document.getElementById("btn-whatsapp").addEventListener("click",()=>window.open(https://wa.me/?text=I%20did%20nothing%20for%20${timerEl.textContent}%20on%20DoNothingChallenge!%20${encodeURIComponent(location.href)})); document.getElementById("btn-embed").addEventListener("click",()=>{navigator.clipboard.writeText('<iframe src="'+location.href+'" width="600" height="400"></iframe>');showToast("Embed code copied!")}); document.getElementById("open-privacy").addEventListener("click",()=>document.getElementById("modal-privacy").showModal()); document.getElementById("open-terms").addEventListener("click",()=>document.getElementById("modal-terms").showModal()); window.addEventListener("blur",reset);["mousemove","keydown","scroll","touchstart"].forEach(e=>window.addEventListener(e,reset)); renderMilestones();renderEarned();updateTimer(); 
+    // listeners
+    startBtn.addEventListener("click",start);
+    stopBtn.addEventListener("click",stop);
+    document.getElementById("btn-share").addEventListener("click",()=>navigator.share?navigator.share({title:"Do Nothing Challenge",text:`I did nothing for ${timerEl.textContent}!`,url:location.href}):copyLink());
+    document.getElementById("btn-copy").addEventListener("click",copyLink);
+    document.getElementById("btn-share-top").addEventListener("click",copyLink);
+    document.getElementById("btn-twitter").addEventListener("click",()=>window.open(`https://twitter.com/intent/tweet?text=I%20did%20nothing%20for%20${timerEl.textContent}%20on%20DoNothingChallenge!%20${encodeURIComponent(location.href)}`));
+    document.getElementById("btn-whatsapp").addEventListener("click",()=>window.open(`https://wa.me/?text=I%20did%20nothing%20for%20${timerEl.textContent}%20on%20DoNothingChallenge!%20${encodeURIComponent(location.href)}`));
+    document.getElementById("btn-embed").addEventListener("click",()=>{navigator.clipboard.writeText('<iframe src="'+location.href+'" width="600" height="400"></iframe>');showToast("Embed code copied!")});
+    document.getElementById("open-privacy").addEventListener("click",()=>document.getElementById("modal-privacy").showModal());
+    document.getElementById("open-terms").addEventListener("click",()=>document.getElementById("modal-terms").showModal());
+    window.addEventListener("blur",reset);["mousemove","keydown","scroll","touchstart"].forEach(e=>window.addEventListener(e,reset));
+    renderMilestones();renderEarned();updateTimer();
   </script>
 </body>
 </html>
