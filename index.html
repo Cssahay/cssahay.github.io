@@ -66,6 +66,31 @@
     .toast.show{opacity:1;transform:none}
     canvas#confetti{position:fixed;inset:0;pointer-events:none;z-index:10}
     .muted{color:var(--muted)}
+      .reset-btn {
+  padding: 12px 28px;
+  border: none;
+  border-radius: 9999px; /* full pill */
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(135deg, #ef4444, #f97316);
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+}
+
+.reset-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+  opacity: 0.95;
+}
+
+.reset-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+  opacity: 0.85;
+}
+
   </style>
   <!-- AdSense global loader -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3749910047527061"
