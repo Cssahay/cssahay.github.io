@@ -300,6 +300,15 @@ function spawnConfetti() {
   step();
 }
 
+      function resetAchievements() {
+  if (confirm("Are you sure you want to reset all achievements?")) {
+    localStorage.clear();
+    alert("All achievements have been reset!");
+    location.reload(); // reload to refresh UI
+  }
+}
+
+
     // listeners
     startBtn.addEventListener("click",start);
     stopBtn.addEventListener("click",stop);
@@ -314,5 +323,12 @@ function spawnConfetti() {
     window.addEventListener("blur",reset);["mousemove","keydown","scroll","touchstart"].forEach(e=>window.addEventListener(e,reset));
     renderMilestones();renderEarned();updateTimer();
   </script>
+<div style="text-align:center; margin: 2rem;">
+  <button onclick="resetAchievements()" 
+          style="padding:10px 20px; margin:5px; border-radius:8px; background:#ef4444; color:white; border:none; cursor:pointer;">
+    🔄 Reset Achievements
+  </button>
+</div>
+
 </body>
 </html>
