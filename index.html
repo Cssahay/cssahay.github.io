@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Do Nothing Challenge — Earn Badges For Being Useless</title>
+  <meta name="description" content="A totally useless website where you win badges by doing absolutely nothing. Share your best 'I did nothing' time. (Ad slots included)" />
+  <meta property="og:title" content="Do Nothing Challenge" />
+  <meta property="og:description" content="Win badges by doing absolutely nothing. How long can you last?" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://your-domain.example" />
+  <meta name="theme-color" content="#111827" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0f172a;--fg:#e5e7eb;--muted:#94a3b8;--accent:#22c55e;--warning:#f59e0b;--card:#111827;--badge:#1f2937}
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,Apple Color Emoji,Segoe UI Emoji; color:var(--fg);background:radial-gradient(1200px 800px at 70% -200px,#1f2937 0%,#0f172a 50%,#0b1220 100%);}
+    a{color:inherit}
+    .container{max-width:980px;margin:0 auto;padding:24px}
+    header{display:flex;gap:16px;align-items:center;justify-content:space-between}
+    .logo{display:flex;gap:12px;align-items:center}
+    .logo-bubble{width:40px;height:40px;border-radius:12px;background:conic-gradient(from 120deg, #22c55e, #84cc16, #22c55e);box-shadow:0 6px 18px rgba(34,197,94,.35)}
+    .title{font-weight:800;letter-spacing:.2px}
+    .nav{display:flex;gap:10px}
+    .btn{display:inline-flex;align-items:center;gap:8px;border:1px solid #334155;background:#0b1220;padding:10px 14px;border-radius:12px;color:var(--fg);text-decoration:none;font-weight:600;cursor:pointer}
+    .btn:hover{border-color:#475569;transform:translateY(-1px)}
+    .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:24px;margin-top:24px}
+    @media (max-width:900px){.hero{grid-template-columns:1fr}}
+    .card{background:linear-gradient(180deg,#0b1220,#0a0f1a);border:1px solid #1f2a3b;border-radius:20px;padding:22px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+    .headline{font-size:clamp(24px,3.6vw,42px);line-height:1.1;margin:8px 0 6px}
+    .sub{color:var(--muted);margin:0}
+    .timer{font-variant-numeric:tabular-nums; font-size:clamp(42px,9vw,96px);font-weight:800;text-align:center;letter-spacing:1px;margin:8px 0}
+    .status{color:#a3e635;text-align:center;font-weight:700;margin-bottom:8px}
+    .rules{color:var(--muted);font-size:14px;text-align:center;margin-top:6px}
+    .badges{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px}
+    .badge{background:linear-gradient(180deg,#142031,#0d1624);border:1px solid #243245;color:#d1d5db;padding:10px 12px;border-radius:999px;display:inline-flex;gap:8px;align-items:center;font-weight:700}
+    .badge .dot{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent)}
+    .cta-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:14px}
+    .primary{background:linear-gradient(90deg,#22c55e,#16a34a);border:1px solid #16a34a}
+    .ghost{background:transparent;border:1px dashed #334155}
+    .ad{display:grid;place-items:center;background:#0a1220;border:1px dashed #334155;border-radius:16px;color:#94a3b8;min-height:120px}
+    .ad small{opacity:.7}
+    .grid{display:grid;grid-template-columns:2fr 1fr;gap:24px;margin-top:24px}
+    @media (max-width:900px){.grid{grid-template-columns:1fr}}
+    .section-title{font-size:20px;margin:0 0 10px}
+    .share-box{display:flex;gap:10px;flex-wrap:wrap}
+    .kbd{font:12px/1.2 ui-monospace,SFMono-Regular,Consolas,Monaco; padding:4px 6px;border:1px solid #334155;border-radius:8px;background:#0b1220;color:#9ca3af}
+    footer{margin-top:36px;color:#94a3b8;font-size:13px}
+    .links{display:flex;gap:12px;flex-wrap:wrap}
+    .pill{padding:8px 10px;border-radius:999px;border:1px solid #334155}
+    .toast{position:fixed;top:14px;right:14px;background:#0b1220;border:1px solid #334155;padding:10px 12px;border-radius:12px;opacity:0;transform:translateY(-12px);transition:.2s;z-index:50}
+    .toast.show{opacity:1;transform:none}
+    canvas#confetti{position:fixed;inset:0;pointer-events:none;z-index:10}
+    .muted{color:var(--muted)}
+  </style>
+</head>
+<body>
+  <canvas id="confetti" aria-hidden="true"></canvas>
+  <div class="container">
+    <header>
+      <div class="logo">
+        <div class="logo-bubble" aria-hidden="true"></div>
+        <div>
+          <div class="title">Do Nothing Challenge</div>
+          <small class="muted">A proudly useless website</small>
+        </div>
+      </div>
+      <nav class="nav" aria-label="Primary navigation">
+        <a class="btn" href="#how">How it works</a>
+        <button id="btn-share-top" class="btn">Share</button>
+      </nav>
+    </header>
+
+    <section class="hero" aria-label="Main">
+      <div class="card" aria-live="polite" aria-atomic="true">
+        <p class="headline">Win badges by doing absolutely nothing.</p>
+        <p class="sub">Keep your mouse and keyboard completely still. If you move, type, scroll, or the tab goes to background — the timer resets. Survive the milestones to earn ridiculous badges and internet glory.</p>
+        <div id="status" class="status">Stay still…</div>
+        <div id="timer" class="timer" aria-label="Do nothing timer">00:00</div>
+        <div class="cta-row">
+          <button id="btn-start" class="btn primary">Start Doing Nothing</button>
+          <button id="btn-stop" class="btn ghost" style="display:none">Stop</button>
+          <button id="btn-share" class="btn ghost">Share My Uselessness</button>
+          <button id="btn-copy" class="btn ghost">Copy Link</button>
+        </div>
+        <p class="rules">Rules: no moving, clicking, tapping, scrolling, key presses, window switching, or tab changing. Touching grass is allowed afterwards.</p>
+        <div id="earned" class="badges" aria-label="earned badges"></div>
+      </div>
+
+      <div class="card" aria-hidden="false">
+        <div class="ad" aria-label="ad slot rectangle">
+          <!-- Replace this box with your AdSense code after approval. -->
+          <div>
+            <div style="font-weight:800">Ad Slot</div>
+            <small>336×280 / 300×250</small><br>
+            <small>Paste AdSense code here</small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid" id="how" tabindex="-1">
+      <div class="card">
+        <h2 class="section-title">How it (barely) works</h2>
+        <ol class="muted">
+          <li>Press <b>Start Doing Nothing</b>.</li>
+          <li>If we detect movement, typing, a scroll, or the tab goes to background — your timer resets.</li>
+          <li>Hit milestones to unlock badges. Share your best attempt to shame your productive friends.</li>
+        </ol>
+        <div class="badges" id="milestones"></div>
+        <div class="share-box" style="margin-top:12px">
+          <button class="btn" id="btn-twitter">Share on X</button>
+          <button class="btn" id="btn-whatsapp">Share on WhatsApp</button>
+          <button class="btn" id="btn-embed">Get Embed Code</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="ad" style="min-height:250px" aria-label="ad slot skyscraper">
+          <div>
+            <div style="font-weight:800">Ad Slot</div>
+            <small>160×600 / 300×600</small><br>
+            <small>Paste AdSense code here</small>
+          </div>
+        </div>
+        <div style="height:12px"></div>
+        <div class="ad" aria-label="ad slot small">
+          <div>
+            <div style="font-weight:800">Ad Slot</div>
+            <small>Responsive</small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="links">
+        <a class="pill" href="#" id="open-privacy">Privacy</a>
+        <a class="pill" href="#" id="open-terms">Terms</a>
+        <span class="pill">© <span id="year"></span> Do Nothing Industries</span>
+      </div>
+      <p class="muted">Disclaimer: This site is satire. It is objectively useless, but ads may still appear because capitalism.</p>
+    </footer>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">Copied!</div>
+
+  <dialog id="modal-privacy" class="card" style="max-width:720px">
+    <h3 class="section-title">Privacy Policy</h3>
+    <p class="muted">We use localStorage to store your best time and badges. If you embed ads, your ad provider may collect data per their policy. We do not sell or share personal data. Contact: uselesschallenge@gmail.com</p>
+    <form method="dialog" style="margin-top:10px"><button class="btn">Close</button></form>
+  </dialog>
+  <dialog id="modal-terms" class="card" style="max-width:720px">
+    <h3 class="section-title">Terms of Use</h3>
+    <p class="muted">By using this site you agree to do nothing at your own risk. No guarantees of entertainment or productivity are provided. Don’t cheat with automation; that’s our job.</p>
+    <form method="dialog" style="margin-top:10px"><button class="btn">Close</button></form>
+  </dialog>
+
+  <script>
+    // ---------- Config ----------
+    const milestones = [
+      { s: 10, name: 'Level 1: Bronze Statue' },
+      { s: 30, name: 'Level 2: Couch Potato' },
+      { s: 60, name: 'Level 3: Human Pause Button' },
+      { s: 120, name: 'Level 4: AFK Master' },
+      { s: 300, name: 'Level 5: Supreme Idler' }
+    ];
+    const MOUSE_MOVE_THRESHOLD = 6; // px - small jitters ignored
+
+    // ---------- Elements ----------
+    const timerEl = document.getElementById('timer');
+    const statusEl = document.getElementById('status');
+    const earnedEl = document.getElementById('earned');
+    const toast = document.getElementById('toast');
+    const confettiCanvas = document.getElementById('confetti');
+    const btnStart = document.getElementById('btn-start');
+    const btnStop = document.getElementById('btn-stop');
+    const btnShare = document.getElementById('btn-share');
+    const btnShareTop = document.getElementById('btn-share-top');
+    const btnCopy = document.getElementById('btn-copy');
+    const btnTwitter = document.getElementById('btn-twitter');
+    const btnWhatsApp = document.getElementById('btn-whatsapp');
+    const btnEmbed = document.getElementById('btn-embed');
+
+    const modalPrivacy = document.getElementById('modal-privacy');
+    const modalTerms = document.getElementById('modal-terms');
+    document.getElementById('open-privacy').onclick = () => modalPrivacy.showModal();
+    document.getElementById('open-terms').onclick = () => modalTerms.showModal();
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // populate milestones UI
+    const milestonesBox = document.getElementById('milestones');
+    milestones.forEach(m => {
+      const el = document.createElement('span');
+      el.className = 'badge';
+      el.innerHTML = `<span class="dot" style="background:#334155;box-shadow:none"></span>${m.name} — <span class="muted">${m.s}s</span>`;
+      el.dataset.seconds = m.s;
+      milestonesBox.appendChild(el);
+    });
+
+    // ---------- State ----------
+    let startTime = null; // ms timestamp when run started
+    let rafId = null;
+    let best = Number(localStorage.getItem('best') || 0);
+    let unlocked = JSON.parse(localStorage.getItem('badges') || '[]');
+    let lastMouse = { x: null, y: null };
+    let confettiCancel = null;
+
+    renderEarned();
+    restoreBestFromUrlParam();
+
+    // ---------- Helpers ----------
+    function fmt(s){
+      const m = Math.floor(s/60).toString().padStart(2,'0');
+      const r = (s%60).toString().padStart(2,'0');
+      return `${m}:${r}`;
+    }
+
+    let toastTimer;
+    function toastMsg(t){
+      toast.textContent = t;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(()=>toast.classList.remove('show'), 1800);
+    }
+
+    function updateShareLinks(){
+      const msg = encodeURIComponent(shareText());
+      btnTwitter.onclick = () => window.open(`https://twitter.com/intent/tweet?text=${msg}`, '_blank', 'noopener');
+      btnWhatsApp.onclick = () => window.open(`https://api.whatsapp.com/send?text=${msg}`, '_blank', 'noopener');
+    }
+
+    function shareText(){
+      const u = new URL(location.href);
+      if (best>0) u.searchParams.set('best', best);
+      const when = best > 0 ? `for ${fmt(best)}` : 'for nothing (yet)';
+      return `I did nothing ${when} and earned pointless badges. Can you beat me? ${u.toString()}`;
+    }
+
+    // ---------- Core timer logic ----------
+    function tick(){
+      if (!startTime) return;
+      const elapsed = Math.floor((Date.now() - startTime)/1000);
+      timerEl.textContent = fmt(elapsed);
+      statusEl.textContent = 'Doing nothing…';
+
+      // Unlock badges
+      milestones.forEach(m => {
+        if (elapsed >= m.s && !unlocked.includes(m.s)) {
+          unlocked.push(m.s);
+          localStorage.setItem('badges', JSON.stringify(unlocked));
+          spawnConfetti();
+          toastMsg(`Unlocked: ${m.name}`);
+          renderEarned();
+        }
+      });
+
+      rafId = requestAnimationFrame(tick);
+    }
+
+    function startRun(){
+      if (startTime) return; // already running
+      startTime = Date.now();
+      lastMouse = { x: null, y: null };
+      statusEl.textContent = 'Doing nothing…';
+      btnStart.style.display = 'none';
+      btnStop.style.display = '';
+      rafId = requestAnimationFrame(tick);
+    }
+
+    function stopRun(){
+      // manual stop - treat as fail but without best-update if 0
+      if (!startTime) return;
+      const elapsed = Math.floor((Date.now() - startTime)/1000);
+      cancelAnimationFrame(rafId);
+      startTime = null;
+      rafId = null;
+      btnStart.style.display = '';
+      btnStop.style.display = 'none';
+      statusEl.textContent = 'Stopped. Your timer was reset.';
+      if (elapsed > best){
+        best = elapsed;
+        localStorage.setItem('best', best);
+        toastMsg(`New personal best: ${fmt(best)}`);
+        renderEarned();
+      } else {
+        timerEl.textContent = '00:00';
+      }
+    }
+
+    function failRun(reason){
+      if (!startTime) return;
+      const elapsed = Math.floor((Date.now() - startTime)/1000);
+      cancelAnimationFrame(rafId);
+      startTime = null;
+      rafId = null;
+      btnStart.style.display = '';
+      btnStop.style.display = 'none';
+      statusEl.textContent = reason || 'Oops, you moved! Timer reset.';
+      if (elapsed > best){
+        best = elapsed;
+        localStorage.setItem('best', best);
+        toastMsg(`New personal best: ${fmt(best)}`);
+        renderEarned();
+      } else {
+        toastMsg('Run failed — try again.');
+      }
+      timerEl.textContent = '00:00';
+    }
+
+    // ---------- Input/activity detection ----------
+    function handlePointerMove(e){
+      if (!startTime) return;
+      // support mouse and touch (touch events will produce touchmove in pointer)
+      const x = (e.touches && e.touches[0]) ? e.touches[0].clientX : (e.clientX ?? null);
+      const y = (e.touches && e.touches[0]) ? e.touches[0].clientY : (e.clientY ?? null);
+      if (x === null || y === null) return;
+      if (lastMouse.x === null || lastMouse.y === null){
+        lastMouse.x = x; lastMouse.y = y;
+        return;
+      }
+      const dx = Math.abs(x - lastMouse.x);
+      const dy = Math.abs(y - lastMouse.y);
+      if (dx > MOUSE_MOVE_THRESHOLD || dy > MOUSE_MOVE_THRESHOLD){
+        failRun('You moved! Timer reset.');
+      }
+    }
+
+    function handleAnyActivity(e){
+      if (!startTime) return;
+      // Events that always reset (keydown, wheel, touchstart, mousedown)
+      const alwaysReset = ['keydown','wheel','mousedown','touchstart','scroll'];
+      if (alwaysReset.includes(e.type)){
+        failRun('Activity detected — timer reset.');
+      }
+    }
+
+    function handleVisibilityChange(){
+      if (!startTime) return;
+      if (document.visibilityState === 'hidden') {
+        // switched away -> immediate fail
+        failRun('Tab hidden — timer reset.');
+      }
+      // If they return (visible), we do not auto-start or anything.
+    }
+
+    // Attach global listeners (passive where useful)
+    window.addEventListener('mousemove', handlePointerMove, { passive: true });
+    window.addEventListener('touchmove', handlePointerMove, { passive: true });
+    window.addEventListener('keydown', handleAnyActivity, { passive: true });
+    window.addEventListener('wheel', handleAnyActivity, { passive: true });
+    window.addEventListener('mousedown', handleAnyActivity, { passive: true });
+    window.addEventListener('touchstart', handleAnyActivity, { passive: true });
+    window.addEventListener('scroll', handleAnyActivity, { passive: true });
+    window.addEventListener('visibilitychange', handleVisibilityChange);
+
+    // handle blur (window lost focus)
+    window.addEventListener('blur', () => {
+      if (!startTime) return;
+      // treat as fail - user switched windows/apps
+      failRun('Window lost focus — timer reset.');
+    });
+
+    // ---------- Share & copy ----------
+    function copyLink(){
+      const u = new URL(location.href);
+      if (best>0) u.searchParams.set('best', best);
+      navigator.clipboard.writeText(u.toString()).then(()=>toastMsg('Link copied!')).catch(()=>toastMsg('Copy failed'));
+    }
+
+    async function shareNative(){
+      const text = shareText();
+      try{
+        if (navigator.share){
+          await navigator.share({ title: 'Do Nothing Challenge', text, url: location.href });
+        } else {
+          await navigator.clipboard.writeText(text);
+          toastMsg('Share text copied!');
+        }
+      }catch(e){ /* user cancelled or no permission */ }
+    }
+
+    btnStart.onclick = startRun;
+    btnStop.onclick = stopRun;
+    btnShare.onclick = shareNative;
+    btnShareTop.onclick = shareNative;
+    btnCopy.onclick = copyLink;
+
+    // Embed code
+    btnEmbed.onclick = () => {
+      const code = `<iframe src="${location.origin+location.pathname}" width="480" height="360" style="border:0;max-width:100%" title="Do Nothing Challenge"></iframe>`;
+      navigator.clipboard.writeText(code).then(()=>toastMsg('Embed code copied!')).catch(()=>toastMsg('Copy failed'));
+    };
+
+    // ---------- Earned rendering ----------
+    function renderEarned(){
+      earnedEl.innerHTML = '';
+      const sorted = [...unlocked].sort((a,b)=>a-b);
+      sorted.forEach(sec => {
+        const m = milestones.find(x=>x.s===sec);
+        if (!m) return;
+        const el = document.createElement('span');
+        el.className='badge';
+        el.innerHTML = `<span class="dot"></span>${m.name}`;
+        earnedEl.appendChild(el);
+      });
+      if (best>0){
+        const el = document.createElement('div');
+        el.className='rules';
+        el.innerHTML = `Best time: <b>${fmt(best)}</b>`;
+        earnedEl.appendChild(el);
+      }
+      updateShareLinks();
+    }
+
+    // url param import
+    function restoreBestFromUrlParam(){
+      const params = new URLSearchParams(location.search);
+      const bestParam = parseInt(params.get('best')||'0',10);
+      if (!Number.isNaN(bestParam) && bestParam > best) {
+        best = bestParam;
+        localStorage.setItem('best', best);
+        renderEarned();
+      }
+    }
+
+    // ---------- Confetti ----------
+    const ctx = confettiCanvas.getContext('2d');
+    function spawnConfetti(){
+      // cancel previous animation if running
+      if (confettiCancel) {
+        confettiCancel();
+        confettiCancel = null;
+      }
+      const W = window.innerWidth;
+      const H = window.innerHeight;
+      confettiCanvas.width = W;
+      confettiCanvas.height = H;
+
+      const pieces = Array.from({length: 100}, () => ({
+        x: Math.random()*W,
+        y: -Math.random()*H*0.2,
+        vx: (Math.random()-0.5)*4,
+        vy: Math.random()*2+2,
+        r: Math.random()*6+4,
+        a: Math.random()*Math.PI,
+        rotSpeed: (Math.random()-0.5)*0.2,
+        life: Math.floor(Math.random()*120)+80
+      }));
+
+      let frame = 0;
+      let running = true;
+      function step(){
+        if (!running) return;
+        ctx.clearRect(0,0,W,H);
+        pieces.forEach(p=>{
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.03; // gravity-like
+          p.a += p.rotSpeed;
+          p.life--;
+          ctx.save();
+          ctx.translate(p.x,p.y);
+          ctx.rotate(p.a);
+          // random pleasant palette via hsl
+          const hue = Math.floor((p.x + p.y + frame) % 360);
+          ctx.fillStyle = `hsl(${hue} 80% 60%)`;
+          ctx.fillRect(-p.r/2, -p.r/2, p.r, p.r * 0.7);
+          ctx.restore();
+        });
+        frame++;
+        if (pieces.every(p=>p.life <= 0 || p.y > H + 50)) {
+          running = false;
+        } else {
+          requestAnimationFrame(step);
+        }
+      }
+      confettiCancel = () => { running = false; ctx.clearRect(0,0,W,H); };
+      step();
+    }
+
+    window.addEventListener('resize', () => {
+      // keep confetti canvas size in sync when user resizes
+      confettiCanvas.width = window.innerWidth;
+      confettiCanvas.height = window.innerHeight;
+    });
+
+    // ---------- Initialize UI links ----------
+    updateShareLinks();
+
+    // Accessibility: allow space/enter to start/stop when focused on Start/Stop
+    btnStart.addEventListener('keyup', (e) => { if (e.key === ' ' || e.key === 'Enter') startRun(); });
+    btnStop.addEventListener('keyup', (e) => { if (e.key === ' ' || e.key === 'Enter') stopRun(); });
+
+    // ---------- Safety: guard localStorage parse ----------
+    try {
+      JSON.parse(localStorage.getItem('badges') || '[]');
+    } catch(e) {
+      localStorage.setItem('badges','[]');
+      unlocked = [];
+    }
+
+    // Keyboard shortcuts (optional): S to start, X to stop — lightweight convenience
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 's' || e.key === 'S') {
+        if (!startTime) startRun();
+      } else if (e.key === 'x' || e.key === 'X') {
+        if (startTime) stopRun();
+      }
+    });
+  </script>
+</body>
+</html>
