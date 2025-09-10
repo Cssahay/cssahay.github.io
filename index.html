@@ -99,7 +99,8 @@
           <button id="btn-stop" class="btn ghost" style="display:none">Stop</button>
           <button id="btn-share" class="btn ghost">Share My Uselessness</button>
           <button id="btn-copy" class="btn ghost">Copy Link</button>
-          <button id="btn-reset" class="btn ghost">Reset Achievements</button> <!-- added button -->
+          <button id="btn-reset" class="btn ghost">Reset Achievements</button>
+          <button id="btn-tip" class="btn ghost">Get a Tip</button>
 
         </div>
         <p class="rules">Rules: no moving, clicking, tapping, scrolling, key presses, window switching, or tab changing. Touching grass is allowed afterwards.</p>
@@ -206,6 +207,29 @@
       {sec:180,label:"Certified Useless"},
       {sec:600,label:"Do Nothing Master"},
     ];
+
+      const tips = [
+  "Just sit there. Like a majestic potato.",
+  "Pro tip: The less you move, the more you win.",
+  "Doing nothing is an art. You are the artist.",
+  "Stay still. Pretend you're buffering.",
+  "Relax. The void will take care of the rest.",
+  "Don’t move. Even your shadow is watching.",
+  "Congratulations, you’re practicing advanced nothingness.",
+  "Doing nothing builds character. Maybe.",
+  "Pretend you’re a statue in a museum. Very realistic.",
+  "Stay still. Even grass grows faster than you right now."
+];
+
+let tipsPool = [...tips];
+
+document.getElementById("btn-tip").addEventListener("click", () => {
+  if (tipsPool.length === 0) tipsPool = [...tips]; // refill if empty
+  const index = Math.floor(Math.random() * tipsPool.length);
+  const randomTip = tipsPool.splice(index, 1)[0];
+  showToast(randomTip); 
+});
+
 
     let running=false,seconds=0,timerInterval,best=+localStorage.bestTime||0,earned=JSON.parse(localStorage.badges||"[]");
 
